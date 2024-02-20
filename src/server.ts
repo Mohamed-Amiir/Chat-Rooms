@@ -27,8 +27,8 @@ io.on("connection", (socket) => {
 
   //Listen for chat messages from the client side
   socket.on("chatMessage", (msg) => {
-    // Send message to the client side 
-    io.emit('MESSAGE',msg);
+    // Send message to the client side
+    io.emit("MESSAGE", msg);
   });
 
   // io.emit("message", "Whatsapp ya regaalla");
