@@ -13,9 +13,24 @@ app.use(express.static(path.join(__dirname, "../dist")));
 
 //Run when client connects
 io.on("connection", (socket) => {
-  console.log("New connection......");
+  // console.log("New connection......");
+
+  //Welcome new users
   socket.emit("message", "Welcom to our Chat Room!");
+  //Broadcast when new user join
   socket.broadcast.emit("message", "Someone has joined the chat !!");
+
+  //when user leave chat
+  socket.on("disconnect", () => {
+    io.emit("message", "Someone has left the chat !!");
+  });
+
+  //Listen for chat messages from the client side
+  socket.on("chatMessage", (msg) => {
+    // Send message to the client side 
+    io.emit('MESSAGE',msg);
+  });
+
   // io.emit("message", "Whatsapp ya regaalla");
 });
 
