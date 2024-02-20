@@ -17,7 +17,8 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "../dist")));
 io.on("connection", (socket) => {
     console.log("New connection......");
     socket.emit("message", "Welcom to our Chat Room!");
-    socket.broadcast.emit;
+    socket.broadcast.emit("message", "Someone has joined the chat !!");
+    // io.emit("message", "Whatsapp ya regaalla");
 });
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
