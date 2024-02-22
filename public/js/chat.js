@@ -2,36 +2,35 @@ const socket = io();
 const chat = document.getElementById("chatMessages");
 const chatForm = document.getElementById("chat-form");
 const input = document.getElementById("msg");
+const roomName = document.getElementById("room-name");
+const users = document.getElementById("users");
 //Get the username and room name from url
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
 // Join Room
+socket.emit("joinRoom", { username, room });
 
-socket.emit("joinRoom",{username,room});
+//get room and users
+socket.on("roomUsers", (info) => {
+  users.innerText = "";
+  roomName.innerText = info.room;
+  for (let i = 0; i < info.users.length; i++) {
+    let x = document.createElement("li");
+    x.innerText = info.users[i].userName;
+    users.append(x);
+  }
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-console.log(username, room);
+// console.log(username, room);
 //chat bot messages
 socket.on("message", (message) => {
   var newElement = document.createElement("p");
   newElement.className = "announcment";
   newElement.textContent = message.text;
   chat.appendChild(newElement);
+  // console.log("Hello");
 });
 
 socket.on("MESSAGE", (message) => {
@@ -45,8 +44,8 @@ chatForm.addEventListener("submit", (event) => {
   const messge = {
     text: event.target.elements.msg.value,
     user: username,
-    room: room
-  }
+    room: room,
+  };
   //get the msg from front end and send it to server side
   socket.emit("chatMessage", messge);
   event.target.elements.msg.value = "";

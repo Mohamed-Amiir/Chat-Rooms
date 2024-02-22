@@ -14,3 +14,13 @@ function userJoin(username: string, id: any, room: string) {
 function getUser(id: any) {
   return users.find((user) => user.id === id);
 }
+
+function userLeave(id: any) {
+  const index = users.findIndex((user) => user.id === id);
+    return users.splice(index, 1)[0];
+  
+}
+function getRoomUsers(room: string) {
+  return users.filter((user) => user.room === room);
+}
+export default { userJoin, getUser, userLeave ,getRoomUsers};

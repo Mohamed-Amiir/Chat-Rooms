@@ -5,7 +5,7 @@
   "main": "C:\\Users\\lenovo\\Desktop\\My-Github\\Chat-Rooms\\dist\\server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server.js"
   },
   "author": "Mohamed Amir",
   "license": "MIT",
