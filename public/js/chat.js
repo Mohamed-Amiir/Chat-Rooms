@@ -5,7 +5,7 @@ const input = document.getElementById("msg");
 socket.on("message", (message) => {
   var newElement = document.createElement("p");
   newElement.className = "announcment";
-  newElement.textContent = message;
+  newElement.textContent = message.text;
   chat.appendChild(newElement);
 });
 socket.on("MESSAGE", (message) => {
@@ -31,9 +31,9 @@ function outputMessage(message) {
   var newElement = document.createElement("div");
   newElement.className = "message";
   newElement.innerHTML = `
-    <p class="meta">Mary <span>9:15pm</span></p>
+    <p class="meta">${message.userName}  <span>${message.time}</span></p>
     <p class="text">
-      ${message}
+      ${message.text}
     </p>
   `;
   chat.appendChild(newElement);
