@@ -57,7 +57,7 @@ chatForm.addEventListener("submit", (event) => {
 function outputMessage(message) {
   //Recieve the message from the server side
   var newElement = document.createElement("div");
-  newElement.className = "message";
+  newElement.className = message.userName === username ? "sent-message" : "message";
   newElement.innerHTML = `
     <p class="meta">${message.userName}  <span>${message.time}</span></p>
     <p class="text">

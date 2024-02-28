@@ -8,11 +8,11 @@
   --error-color: #d9534f;
 } */
 :root {
-  --dark-color-a: #1f1f1f;    /* Darker shade of gray */
-  --dark-color-b: #1f1f1f;    /* Darker shade of gray */
-  --light-color: #333333;     /* Lighter shade of gray */
-  --success-color: #5cb85c;   /* Keep success color as is */
-  --error-color: #d9534f;     /* Keep error color as is */
+  --dark-color-a: #1f1f1f; /* Darker shade of gray */
+  --dark-color-b: #1f1f1f; /* Darker shade of gray */
+  --light-color: #333333; /* Lighter shade of gray */
+  --success-color: #5cb85c; /* Keep success color as is */
+  --error-color: #d9534f; /* Keep error color as is */
 }
 
 * {
@@ -52,7 +52,6 @@ a {
   background: #fff;
   margin: 30px auto;
   overflow: hidden;
-  
 }
 
 .chat-header {
@@ -99,27 +98,59 @@ a {
   max-height: 500px;
   overflow-y: scroll;
   background-color: #242427;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.chat-messages .sent-message {
+  /* display: block; */
+  /* position: absolute; */
+  /* right: 0; */
+  /* align-items: end; */
+  align-self: flex-end;
+
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background-color: rgb(42, 74, 42);
+  border-radius: 5px;
+  color: aliceblue;
+  .meta {
+    font-size: 15px;
+    font-weight: bold;
+    color: #04ff29;
+    opacity: 0.7;
+    margin-bottom: 7px;
+    span {
+      color: #d50000;
+    }
+  }
 }
 
 .chat-messages .message {
+  /* display: block; */
+  align-self: flex-start;
+
+  width: 50%;
   padding: 10px;
   margin-bottom: 15px;
   background-color: var(--light-color);
   border-radius: 5px;
   color: aliceblue;
+  .meta {
+    font-size: 15px;
+    font-weight: bold;
+    color: #04ff29;
+    opacity: 0.7;
+    margin-bottom: 7px;
+  }
+  span {
+    color: #d50000;
+  }
 }
 
-.chat-messages .message .meta {
-  font-size: 15px;
-  font-weight: bold;
-  color: #04ff29;
-  opacity: 0.7;
-  margin-bottom: 7px;
-}
 
-.chat-messages .message .meta span {
-  color: #d50000;
-}
+
 
 .chat-form-container {
   padding: 20px 30px;
@@ -199,7 +230,7 @@ a {
   }
 }
 
-.announcment{
+.announcment {
   text-align: center;
   color: rgb(226, 43, 186);
 }
