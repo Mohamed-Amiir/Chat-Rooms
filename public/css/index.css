@@ -233,4 +233,9 @@ a {
 .announcment {
   text-align: center;
   color: rgb(226, 43, 186);
+  background-color: #1f1f1f;
+  /* width: auto; */
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
