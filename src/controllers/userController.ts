@@ -1,25 +1,31 @@
-import User from "../../dist/models/UserModel.js"
+import User from "../models/UserModel";
 
+interface UserRecord {
+  name: string;
+  email: string;
+  password: string;
+  id: string;
+}
 const registerCustomer = async (req: any, res: any): Promise<void> => {
   try {
-    // Check if the customer already exists
-    const existingUser = await User.findOne({ email: req.body.email });
+    const { name, email, password } = req.body;
+
+    // Check if the user already exists
+    const existingUser = User.getAllUsers().find(user => user.email === email);
 
     if (existingUser) {
-      res.status(400).send("User Already registered !!!");
+      res.status(400).send("User already registered!");
     } else {
-      const { name, email, password, address } = req.body;
-
-      // Create a new user instance
-      const newUser = new User({
+      // Create a new user object
+      const newUser: UserRecord = {
         name,
         email,
         password,
-        address,
-      });
+        id: Math.random().toString(36).substring(7) // Generate a random ID
+      };
 
-      // Save the new user to the database
-      await newUser.save();
+      // Save the new user
+      User.saveUser(newUser);
 
       res.status(200).send("User registered successfully!");
     }
