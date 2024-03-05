@@ -1,33 +1,38 @@
-import User from "../models/UserModel";
+import { Request, Response } from "express";
+import User, { IUser } from "../models/UserModel";
+import config from "config";
+import bcrypt from "bcrypt";
 
-interface UserRecord {
-  name: string;
-  email: string;
-  password: string;
-  id: string;
-}
-const registerCustomer = async (req: any, res: any): Promise<void> => {
+const registerUser = async (req: Request, res: any): Promise<void> => {
   try {
-    const { name, email, password } = req.body;
-
     // Check if the user already exists
-    const existingUser = User.getAllUsers().find(user => user.email === email);
-
-    if (existingUser) {
-      res.status(400).send("User already registered!");
+    const user: IUser | null = await User.findOne({
+      email: req.body.email,
+    }).exec();
+    if (user) {
+      return res.status(400).send("User Already registered !!!");
     } else {
-      // Create a new user object
-      const newUser: UserRecord = {
-        name,
-        email,
-        password,
-        id: Math.random().toString(36).substring(7) // Generate a random ID
-      };
+      const { name, email, password, address } = req.body;
 
-      // Save the new user
-      User.saveUser(newUser);
+      // Hashing Password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
-      res.status(200).send("User registered successfully!");
+      // Add new user
+      const newUser: IUser = new User({
+        name: name,
+        email: email,
+        password: hashedPassword,
+        address: address,
+      });
+      await newUser.save();
+      res.send("Registration done successfully...WELCOME!!");
+      // JSON WEB TOKEN
+      if (!config.get('jwtsec')) {
+        return res.status(500).send('Request can not be fulfilled ... token is not defined !!');
+      }
+      const token = newUser.genAuthToken();
+      res.json({ token });
     }
   } catch (error) {
     console.error(error);
@@ -35,4 +40,4 @@ const registerCustomer = async (req: any, res: any): Promise<void> => {
   }
 };
 
-export default registerCustomer;
+export default registerUser;

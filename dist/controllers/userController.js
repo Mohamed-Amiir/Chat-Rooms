@@ -13,31 +13,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserModel_1 = __importDefault(require("../models/UserModel"));
-const registerCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const config_1 = __importDefault(require("config"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, email, password } = req.body;
         // Check if the user already exists
-        const existingUser = UserModel_1.default.getAllUsers().find(user => user.email === email);
-        if (existingUser) {
-            res.status(400).send("User already registered!");
+        const user = yield UserModel_1.default.findOne({ email: req.body.email }).exec();
+        if (user) {
+            return res.status(400).send('User Already registered !!!');
         }
         else {
-            // Create a new user object
-            const newUser = {
-                name,
-                email,
-                password,
-                id: Math.random().toString(36).substring(7) // Generate a random ID
-            };
-            // Save the new user
-            UserModel_1.default.saveUser(newUser);
-            res.status(200).send("User registered successfully!");
+            const { name, email, password, address } = req.body;
+            // Hashing Password
+            const salt = yield bcrypt_1.default.genSalt(10);
+            const hashedPassword = yield bcrypt_1.default.hash(password, salt);
+            // Add new user
+            const newUser = new UserModel_1.default({
+                name: name,
+                email: email,
+                password: hashedPassword,
+                address: address,
+            });
+            yield newUser.save();
+            // JSON WEB TOKEN
+            if (!config_1.default.get('jwtsec')) {
+                return res.status(500).send('Request can not be fulfilled ... token is not defined !!');
+            }
+            const token = newUser.genAuthToken();
+            res.json({ token });
         }
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Registration failed" });
+        res.status(500).json({ error: 'Registration failed' });
     }
 });
-exports.default = registerCustomer;
+exports.default = registerUser;
 //# sourceMappingURL=userController.js.map

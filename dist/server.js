@@ -9,23 +9,25 @@ const http_1 = __importDefault(require("http"));
 const socket_io_1 = __importDefault(require("socket.io"));
 const message_js_1 = __importDefault(require("./util/message.js"));
 const user_js_1 = __importDefault(require("./util/user.js"));
-// const mongoose = require("mongoose");
+const userRouter_js_1 = __importDefault(require("./routers/userRouter.js"));
+const mongoose = require("mongoose");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const port = process.env.PORT || 3000;
 const io = new socket_io_1.default.Server(server);
+app.use("/user", userRouter_js_1.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
-// mongoose
-//   .connect("mongodb://localhost:27017/chat", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log("Database Connected...");
-//   })
-//   .catch((err: any) => {
-//     console.error("Error connecting to database:", err);
-//   });
+mongoose
+    .connect("mongodb://localhost:27017/chat", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => {
+    console.log("Database Connected...");
+})
+    .catch((err) => {
+    console.error("Error connecting to database:", err);
+});
 //Run when client connects
 io.on("connection", (socket) => {
     //joining room

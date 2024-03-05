@@ -1,52 +1,46 @@
-import fs from "fs";
-import path from "path";
+import mongoose, { Schema, Document, Model } from "mongoose";
+import jwt from "jsonwebtoken";
+import config from "config";
 
-// Define the path to the users JSON file
-const usersFilePath = path.join(__dirname, "../../data/users.json");
-
-interface UserRecord {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  id: string;
+  address: string;
+  genAuthToken: () => string;
 }
 
-class User {
-  static getAllUsers(): UserRecord[] {
-    try {
-      const usersData = fs.readFileSync(usersFilePath, "utf-8");
-      return JSON.parse(usersData);
-    } catch (error) {
-      console.error("Error reading users from file:", error);
-      return [];
-    }
-  }
+const userSchema: Schema<IUser> = new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+});
 
-  static saveUser(newUser: UserRecord): void {
-    try {
-      const users = User.getAllUsers();
-      users.push(newUser);
-      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2), "utf-8");
-    } catch (error) {
-      console.error("Error writing user to file:", error);
-    }
-  }
+userSchema.methods.genAuthToken = function (): string {
+  const token = jwt.sign(
+    {
+      usrid: this._id,
+    },
+    config.get("jwtsec")
+  );
+  return token;
+};
 
-  static getUser(id: string): UserRecord | undefined {
-    const users = User.getAllUsers();
-    return users.find((user) => user.id === id);
-  }
-
-  static deleteUser(id: string): UserRecord | undefined {
-    let users = User.getAllUsers();
-    const index = users.findIndex((user) => user.id === id);
-    if (index !== -1) {
-      const deletedUser = users.splice(index, 1)[0];
-      fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2), "utf-8");
-      return deletedUser;
-    }
-    return undefined;
-  }
-}
+const User: Model<IUser> = mongoose.model<IUser>("users", userSchema);
 
 export default User;
