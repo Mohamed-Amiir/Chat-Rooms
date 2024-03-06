@@ -5,8 +5,8 @@ import socketIO from "socket.io";
 import formatMessage from "./util/message.js";
 import USER from "./util/user.js";
 import User from "./routers/userRouter.js";
+import mongoose from "mongoose";
 
-const mongoose = require("mongoose");
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
@@ -15,10 +15,11 @@ const io = new socketIO.Server(server);
 app.use("/user", User);
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 mongoose
   .connect("mongodb://localhost:27017/chat", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Database Connected...");
@@ -75,6 +76,8 @@ io.on("connection", (socket) => {
   // console.log("hello world");
   // io.emit("message", "Whatsapp ya regaalla");
 });
+
+
 app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/signup.html"));
 });

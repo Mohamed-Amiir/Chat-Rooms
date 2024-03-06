@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import validator from '../util/userValidatior';
+import validator from '../util/userValidator';
 
 const validate = (req: any, res: Response, next: NextFunction): void => {
   let valid = validator.validate(req.body);

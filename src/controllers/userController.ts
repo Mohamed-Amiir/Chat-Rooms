@@ -3,14 +3,22 @@ import User, { IUser } from "../models/UserModel";
 import config from "config";
 import bcrypt from "bcrypt";
 
-const registerUser = async (req: Request, res: any): Promise<void> => {
+const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log("Request Body:", req.body.name); // Log the entire request body
+
+    if (req.body.email) {
+      console.log("Email:", req.body.email); // Log the email property specifically
+    } else {
+      console.log("Email is missing from request body");
+    }
+
     // Check if the user already exists
     const user: IUser | null = await User.findOne({
       email: req.body.email,
     }).exec();
     if (user) {
-      return res.status(400).send("User Already registered !!!");
+      res.status(400).send("User Already registered !!!");
     } else {
       const { name, email, password, address } = req.body;
 
@@ -28,8 +36,10 @@ const registerUser = async (req: Request, res: any): Promise<void> => {
       await newUser.save();
       res.send("Registration done successfully...WELCOME!!");
       // JSON WEB TOKEN
-      if (!config.get('jwtsec')) {
-        return res.status(500).send('Request can not be fulfilled ... token is not defined !!');
+      if (!config.get("jwtsec")) {
+        res
+          .status(500)
+          .send("Request can not be fulfilled ... token is not defined !!");
       }
       const token = newUser.genAuthToken();
       res.json({ token });

@@ -17,10 +17,19 @@ const config_1 = __importDefault(require("config"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("Request Body:", req.body.name); // Log the entire request body
+        if (req.body.email) {
+            console.log("Email:", req.body.email); // Log the email property specifically
+        }
+        else {
+            console.log("Email is missing from request body");
+        }
         // Check if the user already exists
-        const user = yield UserModel_1.default.findOne({ email: req.body.email }).exec();
+        const user = yield UserModel_1.default.findOne({
+            email: req.body.email,
+        }).exec();
         if (user) {
-            return res.status(400).send('User Already registered !!!');
+            res.status(400).send("User Already registered !!!");
         }
         else {
             const { name, email, password, address } = req.body;
@@ -35,9 +44,12 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 address: address,
             });
             yield newUser.save();
+            res.send("Registration done successfully...WELCOME!!");
             // JSON WEB TOKEN
-            if (!config_1.default.get('jwtsec')) {
-                return res.status(500).send('Request can not be fulfilled ... token is not defined !!');
+            if (!config_1.default.get("jwtsec")) {
+                res
+                    .status(500)
+                    .send("Request can not be fulfilled ... token is not defined !!");
             }
             const token = newUser.genAuthToken();
             res.json({ token });
@@ -45,7 +57,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Registration failed' });
+        res.status(500).json({ error: "Registration failed" });
     }
 });
 exports.default = registerUser;
