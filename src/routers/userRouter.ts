@@ -5,6 +5,6 @@ import validate from "../middlewares/userMwValidator";
 const router: Router = express.Router();
 
 // Customer registration
-router.post("/signup", validate, userController);
+router.post("/signup",validate, userController);
 
 export default router;

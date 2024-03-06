@@ -7,7 +7,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   address: string;
-  genAuthToken: () => string;
+  // genAuthToken: () => string;
 }
 
 const userSchema: Schema<IUser> = new Schema({
@@ -31,15 +31,15 @@ const userSchema: Schema<IUser> = new Schema({
   },
 });
 
-userSchema.methods.genAuthToken = function (): string {
-  const token = jwt.sign(
-    {
-      usrid: this._id,
-    },
-    config.get("jwtsec")
-  );
-  return token;
-};
+// userSchema.methods.genAuthToken = function (): string {
+//   const token = jwt.sign(
+//     {
+//       usrid: this._id,
+//     },
+//     config.get("jwtsec")
+//   );
+//   return token;
+// };
 
 const User: Model<IUser> = mongoose.model<IUser>("users", userSchema);
 

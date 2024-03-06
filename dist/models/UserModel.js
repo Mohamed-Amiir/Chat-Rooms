@@ -22,13 +22,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const config_1 = __importDefault(require("config"));
 const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
@@ -49,12 +44,15 @@ const userSchema = new mongoose_1.Schema({
         required: true,
     },
 });
-userSchema.methods.genAuthToken = function () {
-    const token = jsonwebtoken_1.default.sign({
-        usrid: this._id,
-    }, config_1.default.get("jwtsec"));
-    return token;
-};
+// userSchema.methods.genAuthToken = function (): string {
+//   const token = jwt.sign(
+//     {
+//       usrid: this._id,
+//     },
+//     config.get("jwtsec")
+//   );
+//   return token;
+// };
 const User = mongoose_1.default.model("users", userSchema);
 exports.default = User;
 //# sourceMappingURL=UserModel.js.map

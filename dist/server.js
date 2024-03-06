@@ -15,10 +15,10 @@ const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const port = process.env.PORT || 3000;
 const io = new socket_io_1.default.Server(server);
+app.use(express_1.default.json());
 app.use("/user", userRouter_js_1.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
+// Parse JSON bodies
 mongoose_1.default
     .connect("mongodb://localhost:27017/chat", {
 // useNewUrlParser: true,
