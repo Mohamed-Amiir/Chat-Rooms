@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserModel_1 = __importDefault(require("../models/UserModel"));
+const config_1 = __importDefault(require("config"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -42,15 +43,15 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 address: address,
             });
             yield newUser.save();
-            res.send("Registration done successfully...WELCOME!!");
-            // // JSON WEB TOKEN
-            // if (!config.get("jwtsec")) {
-            //   res
-            //     .status(500)
-            //     .send("Request can not be fulfilled ... token is not defined !!");
-            // }
-            // const token = newUser.genAuthToken();
-            // res.json({ token });
+            // res.send("Registration done successfully...WELCOME!!");
+            // JSON WEB TOKEN
+            if (!config_1.default.get("jwtsec")) {
+                res
+                    .status(500)
+                    .send("Request can not be fulfilled ... token is not defined !!");
+            }
+            const token = newUser.genAuthToken();
+            res.json({ token });
         }
     }
     catch (error) {
@@ -58,5 +59,34 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).json({ error: "Registration failed" });
     }
 });
-exports.default = registerUser;
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = req.body;
+        //Check Email
+        const user = yield UserModel_1.default.findOne({ email: email }).exec();
+        if (!user)
+            res.status(400).send("Invaild Email!!");
+        else {
+            //Check Password
+            let validPassword = yield bcrypt_1.default.compare(password, user.password);
+            if (!validPassword)
+                res.status(400).send("Invalid Password !!");
+            else {
+                // Successfully logged in
+                // JWT
+                if (!config_1.default.get("jwtsec"))
+                    res.status(500).send("Token is NOT defined !!!");
+                else {
+                    const token = user.genAuthToken();
+                    res.json({ token });
+                }
+            }
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Login failed" });
+    }
+});
+exports.default = { registerUser, loginUser };
 //# sourceMappingURL=userController.js.map

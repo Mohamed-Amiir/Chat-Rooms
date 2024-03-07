@@ -29,7 +29,7 @@ login.addEventListener("submit", function (event) {
   var password = document.getElementById("login-password").value;
 
   // Your API endpoint for login
-  var apiUrl = "/customer/login";
+  var apiUrl = "/login";
 
   // Data to be sent to the server
   var data = {

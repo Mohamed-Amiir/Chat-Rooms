@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 const io = new socketIO.Server(server);
 app.use(express.json());
 
-app.use("/user", User);
+app.use("/", User);
 app.use(express.static(path.join(__dirname, "../public")));
 // Parse JSON bodies
 mongoose

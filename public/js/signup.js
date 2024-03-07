@@ -30,7 +30,7 @@ signup.addEventListener("submit", function (event) {
     var address = document.getElementById("signup-address").value;
   
     // Your API endpoint for login
-    var apiUrl = "/customer/signup";
+    var apiUrl = "/signup";
   
     // Data to be sent to the server
     var data = {
