@@ -16,7 +16,7 @@ const server = http_1.default.createServer(app);
 const port = process.env.PORT || 3000;
 const io = new socket_io_1.default.Server(server);
 app.use(express_1.default.json());
-app.use("/", userRouter_js_1.default);
+app.use("/user", userRouter_js_1.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
 // Parse JSON bodies
 mongoose_1.default
@@ -70,8 +70,14 @@ app.get("/signup", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "../public/signup.html"));
 });
 app.get("/login", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "../public/login.html"));
+    res.sendFile(path_1.default.join(__dirname, "../public/index.html"));
 });
+app.get("/home", (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, "../public/home.html"));
+});
+// app.get("/", (req, res) => {
+//   res.redirect("/login");
+// });
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

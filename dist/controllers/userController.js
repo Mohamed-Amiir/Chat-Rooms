@@ -51,7 +51,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                     .send("Request can not be fulfilled ... token is not defined !!");
             }
             const token = newUser.genAuthToken();
-            res.json({ token });
+            res.status(200).json({ status: "success", token });
         }
     }
     catch (error) {
@@ -78,7 +78,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     res.status(500).send("Token is NOT defined !!!");
                 else {
                     const token = user.genAuthToken();
-                    res.json({ token });
+                    res.status(200).json({ status: "success", token });
                 }
             }
         }

@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 const io = new socketIO.Server(server);
 app.use(express.json());
 
-app.use("/", User);
+app.use("/user", User);
 app.use(express.static(path.join(__dirname, "../public")));
 // Parse JSON bodies
 mongoose
@@ -82,9 +82,14 @@ app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/signup.html"));
 });
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/login.html"));
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
-
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/home.html"));
+});
+// app.get("/", (req, res) => {
+//   res.redirect("/login");
+// });
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

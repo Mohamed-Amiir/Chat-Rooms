@@ -42,7 +42,7 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
           .send("Request can not be fulfilled ... token is not defined !!");
       }
       const token = newUser.genAuthToken();
-      res.json({ token });
+      res.status(200).json({ status: "success", token });
     }
   } catch (error) {
     console.error(error);
@@ -67,7 +67,7 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
           res.status(500).send("Token is NOT defined !!!");
         else {
           const token = user.genAuthToken();
-          res.json({ token });
+          res.status(200).json({ status: "success", token });
         }
       }
     }
