@@ -11,25 +11,20 @@ async function fetchData(apiUrl, data) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("Response:", data); // Log the response data
         if (data.status === "success") {
           // Redirect to the dashboard
-          window.location.href = "/home";
+          window.location.href = `/home?name=${data.user.name}`;
         } else {
           // Handle login failure, e.g., display an error message
           console.error("Login failed: " + data.message);
         }
       });
-
-    // if (!response.ok) {
-    //   throw new Error("Network response was not ok");
-    // }
-
-    // const responseData = await response.json();
-    // console.log(responseData);
   } catch (error) {
     console.error("Error:", error);
   }
 }
+
 
 login.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent the form from submitting normally

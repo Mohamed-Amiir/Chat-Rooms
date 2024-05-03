@@ -78,18 +78,32 @@ io.on("connection", (socket) => {
   // io.emit("message", "Whatsapp ya regaalla");
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+// Endpoint to handle login
+app.post('/login', (req, res) => {
+  // Assuming you have code to authenticate the user
+  // After successful authentication, redirect to home page
+  res.redirect('/home');
+});
+
+// Route to serve home.html after login
+app.get('/home', (req, res) => {
+  // Assuming you have middleware to authenticate the user and attach user data to the request
+  // If user is authenticated, serve home.html, otherwise redirect to login page
+  res.sendFile(path.join(__dirname, '../public/home.html'));
+});
 app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/signup.html"));
 });
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
-});
-app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/home.html"));
-});
-// app.get("/", (req, res) => {
-//   res.redirect("/login");
+// app.get("/login", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../public/index.html"));
 // });
+// app.get("/home", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../public/home.html"));
+// });
+
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

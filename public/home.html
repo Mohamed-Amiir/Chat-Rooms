@@ -19,17 +19,7 @@
         <h1><i class="fas fa-smile"></i> WhatsUP</h1>
       </header>
       <main class="join-main">
-        <form action="chat.html">
-          <div class="form-control">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Enter username..."
-              required
-            />
-          </div>
+        <form>
           <div class="form-control">
             <label for="room">Room</label>
             <select name="room" id="room">
@@ -44,10 +34,15 @@
           <button type="submit" class="btn">Join Chat</button>
         </form>
       </main>
-    </div>
-    <script>
-      const name = document.getElementById("username");
-      name.focus();
-    </script>
+      <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const urlParams = new URLSearchParams(window.location.search);
+          const name = urlParams.get('name');
+          const room = document.getElementById('room').value;
+          window.location.href = `/chat.html?name=${name}&room=${room}`;
+        });
+      </script>
   </body>
 </html>

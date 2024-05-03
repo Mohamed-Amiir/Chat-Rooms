@@ -63,11 +63,11 @@ const loginUser = async (req: Request, res: Response): Promise<void> => {
       else {
         // Successfully logged in
         // JWT
-        if (!config.get("jwtsec"))
+        if (!config.get("jwtsec")) {
           res.status(500).send("Token is NOT defined !!!");
-        else {
+        } else {
           const token = user.genAuthToken();
-          res.status(200).json({ status: "success", token });
+          res.status(200).json({ status: "success", token, user });
         }
       }
     }

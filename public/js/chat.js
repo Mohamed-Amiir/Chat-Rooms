@@ -5,9 +5,10 @@ const input = document.getElementById("msg");
 const roomName = document.getElementById("room-name");
 const users = document.getElementById("users");
 //Get the username and room name from url
-const { username, room } = Qs.parse(location.search, {
+const { name, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
+const username = name;
 
 // Join Room
 socket.emit("joinRoom", { username, room });

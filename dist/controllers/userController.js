@@ -74,11 +74,12 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             else {
                 // Successfully logged in
                 // JWT
-                if (!config_1.default.get("jwtsec"))
+                if (!config_1.default.get("jwtsec")) {
                     res.status(500).send("Token is NOT defined !!!");
+                }
                 else {
                     const token = user.genAuthToken();
-                    res.status(200).json({ status: "success", token });
+                    res.status(200).json({ status: "success", token, user });
                 }
             }
         }
