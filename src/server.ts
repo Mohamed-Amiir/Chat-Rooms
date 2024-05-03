@@ -15,7 +15,7 @@ const io = new socketIO.Server(server);
 app.use(express.json());
 
 app.use("/user", User);
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../docs")));
 // Parse JSON bodies
 mongoose
   .connect("mongodb://localhost:27017/chat", {
@@ -79,7 +79,7 @@ io.on("connection", (socket) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.sendFile(path.join(__dirname, '../docs/index.html'));
 });
 // Endpoint to handle login
 app.post('/login', (req, res) => {
@@ -92,16 +92,16 @@ app.post('/login', (req, res) => {
 app.get('/home', (req, res) => {
   // Assuming you have middleware to authenticate the user and attach user data to the request
   // If user is authenticated, serve home.html, otherwise redirect to login page
-  res.sendFile(path.join(__dirname, '../public/home.html'));
+  res.sendFile(path.join(__dirname, '../docs/home.html'));
 });
 app.get("/signup", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/signup.html"));
+  res.sendFile(path.join(__dirname, "../docs/signup.html"));
 });
 // app.get("/login", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/index.html"));
+//   res.sendFile(path.join(__dirname, "../docs/index.html"));
 // });
 // app.get("/home", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/home.html"));
+//   res.sendFile(path.join(__dirname, "../docs/home.html"));
 // });
 
 server.listen(port, () => {

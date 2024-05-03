@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 const io = new socket_io_1.default.Server(server);
 app.use(express_1.default.json());
 app.use("/user", userRouter_js_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, "../public")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "../docs")));
 // Parse JSON bodies
 mongoose_1.default
     .connect("mongodb://localhost:27017/chat", {
@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
     // io.emit("message", "Whatsapp ya regaalla");
 });
 app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../public/index.html'));
+    res.sendFile(path_1.default.join(__dirname, '../docs/index.html'));
 });
 // Endpoint to handle login
 app.post('/login', (req, res) => {
@@ -79,16 +79,16 @@ app.post('/login', (req, res) => {
 app.get('/home', (req, res) => {
     // Assuming you have middleware to authenticate the user and attach user data to the request
     // If user is authenticated, serve home.html, otherwise redirect to login page
-    res.sendFile(path_1.default.join(__dirname, '../public/home.html'));
+    res.sendFile(path_1.default.join(__dirname, '../docs/home.html'));
 });
 app.get("/signup", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "../public/signup.html"));
+    res.sendFile(path_1.default.join(__dirname, "../docs/signup.html"));
 });
 // app.get("/login", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/index.html"));
+//   res.sendFile(path.join(__dirname, "../docs/index.html"));
 // });
 // app.get("/home", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/home.html"));
+//   res.sendFile(path.join(__dirname, "../docs/home.html"));
 // });
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
