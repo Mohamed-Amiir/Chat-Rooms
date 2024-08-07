@@ -7,6 +7,9 @@ import USER from "./util/user.js";
 import User from "./routers/userRouter.js";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+/********************************************************************************/
+
+/********************************************************************************/
 
 const app = express();
 const server = http.createServer(app);
@@ -18,10 +21,13 @@ app.use("/user", User);
 app.use(express.static(path.join(__dirname, "../docs")));
 // Parse JSON bodies
 mongoose
-  .connect("mongodb://localhost:27017/chat", {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  } as any)
+  .connect(
+    "mongodb+srv://mooamir90:AW6Z3POaGXp2Gpm0@mohamed-amir.u5otilt.mongodb.net/chat?retryWrites=true&w=majority&appName=Mohamed-Amir",
+    {
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+    } as any
+  )
   .then(() => {
     console.log("Database Connected...");
   })
@@ -78,31 +84,25 @@ io.on("connection", (socket) => {
   // io.emit("message", "Whatsapp ya regaalla");
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../docs/index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../docs/index.html"));
 });
 // Endpoint to handle login
-app.post('/login', (req, res) => {
+app.post("/login", (req, res) => {
   // Assuming you have code to authenticate the user
   // After successful authentication, redirect to home page
-  res.redirect('/home');
+  res.redirect("/home");
 });
 
 // Route to serve home.html after login
-app.get('/home', (req, res) => {
+app.get("/home", (req, res) => {
   // Assuming you have middleware to authenticate the user and attach user data to the request
   // If user is authenticated, serve home.html, otherwise redirect to login page
-  res.sendFile(path.join(__dirname, '../docs/home.html'));
+  res.sendFile(path.join(__dirname, "../docs/home.html"));
 });
 app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "../docs/signup.html"));
 });
-// app.get("/login", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../docs/index.html"));
-// });
-// app.get("/home", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../docs/home.html"));
-// });
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
