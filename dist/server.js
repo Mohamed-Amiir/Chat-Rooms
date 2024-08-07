@@ -11,6 +11,8 @@ const message_js_1 = __importDefault(require("./util/message.js"));
 const user_js_1 = __importDefault(require("./util/user.js"));
 const userRouter_js_1 = __importDefault(require("./routers/userRouter.js"));
 const mongoose_1 = __importDefault(require("mongoose"));
+/********************************************************************************/
+/********************************************************************************/
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const port = process.env.PORT || 3000;
@@ -20,7 +22,7 @@ app.use("/user", userRouter_js_1.default);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../docs")));
 // Parse JSON bodies
 mongoose_1.default
-    .connect("mongodb://localhost:27017/chat", {
+    .connect("mongodb+srv://mooamir90:AW6Z3POaGXp2Gpm0@mohamed-amir.u5otilt.mongodb.net/chat?retryWrites=true&w=majority&appName=Mohamed-Amir", {
 // useNewUrlParser: true,
 // useUnifiedTopology: true,
 })
@@ -66,30 +68,24 @@ io.on("connection", (socket) => {
     // console.log("hello world");
     // io.emit("message", "Whatsapp ya regaalla");
 });
-app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../docs/index.html'));
+app.get("/", (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, "../docs/index.html"));
 });
 // Endpoint to handle login
-app.post('/login', (req, res) => {
+app.post("/login", (req, res) => {
     // Assuming you have code to authenticate the user
     // After successful authentication, redirect to home page
-    res.redirect('/home');
+    res.redirect("/home");
 });
 // Route to serve home.html after login
-app.get('/home', (req, res) => {
+app.get("/home", (req, res) => {
     // Assuming you have middleware to authenticate the user and attach user data to the request
     // If user is authenticated, serve home.html, otherwise redirect to login page
-    res.sendFile(path_1.default.join(__dirname, '../docs/home.html'));
+    res.sendFile(path_1.default.join(__dirname, "../docs/home.html"));
 });
 app.get("/signup", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "../docs/signup.html"));
 });
-// app.get("/login", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../docs/index.html"));
-// });
-// app.get("/home", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../docs/home.html"));
-// });
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
